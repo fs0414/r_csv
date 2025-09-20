@@ -3,5 +3,5 @@
 # in the ext/ directory.
 
 [workspace]
-members = ["./ext/r_csv"]
+members = ["./ext/rbcsv"]
 resolver = "2"
