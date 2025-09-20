@@ -13,3 +13,6 @@ gem "rake-compiler"
 gem "rspec", "~> 3.0"
 
 gem "rubocop", "~> 1.21"
+
+gem "csv", "~> 3.3"  # Required for Ruby 3.4+
+gem "benchmark", require: false

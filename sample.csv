@@ -1,0 +1,101 @@
+id,title,description,category,status,location,start_date,end_date,max_participants,created_at,updated_at
+1,Ruby on Rails Study Group,Learn about Rails 8.0 new features,tech,published,Shibuya,2025-01-15 19:00:00,2025-01-15 21:00:00,30,2025-01-01 10:00:00,2025-01-01 10:00:00
+2,Jazz Night in Tokyo,Wonderful jazz performance,music,published,Shinjuku,2025-01-20 20:00:00,2025-01-20 23:00:00,50,2025-01-02 11:00:00,2025-01-02 11:00:00
+3,Marathon Race,Tokyo Bay Marathon,sports,published,Odaiba,2025-02-01 08:00:00,2025-02-01 12:00:00,100,2025-01-03 12:00:00,2025-01-03 12:00:00
+4,Kyoto Day Trip,Visit historical Kyoto landmarks,travel,published,Kyoto City,2025-02-10 09:00:00,2025-02-10 18:00:00,25,2025-01-04 13:00:00,2025-01-04 13:00:00
+5,Sushi Making Experience,Learn sushi making from professionals,food,published,Ginza,2025-01-25 18:00:00,2025-01-25 21:00:00,15,2025-01-05 14:00:00,2025-01-05 14:00:00
+6,React.js Workshop,Modern React development,tech,draft,Ikebukuro,2025-03-01 14:00:00,2025-03-01 17:00:00,20,2025-01-06 15:00:00,2025-01-06 15:00:00
+7,Classical Music Concert,Beethoven Symphony No.9,music,published,Ueno,2025-02-14 19:30:00,2025-02-14 21:30:00,200,2025-01-07 16:00:00,2025-01-07 16:00:00
+8,Soccer Match Viewing,J-League match viewing,sports,published,Ajinomoto Stadium,2025-02-22 15:00:00,2025-02-22 17:00:00,80,2025-01-08 17:00:00,2025-01-08 17:00:00
+9,Hakone Hot Spring Trip,Relaxing hot spring trip,travel,published,Hakone,2025-03-15 10:00:00,2025-03-16 15:00:00,40,2025-01-09 18:00:00,2025-01-09 18:00:00
+10,Ramen Food Tour,Tokyo delicious ramen shop tour,food,published,Tokyo Station area,2025-02-05 12:00:00,2025-02-05 15:00:00,12,2025-01-10 19:00:00,2025-01-10 19:00:00
+11,Python Machine Learning Seminar,ML from basics to applications,tech,published,Akihabara,2025-02-28 10:00:00,2025-02-28 17:00:00,35,2025-01-11 09:00:00,2025-01-11 09:00:00
+12,Piano Recital,Chopin masterpieces performance,music,published,Ginza Yamaha Hall,2025-03-05 19:00:00,2025-03-05 21:00:00,100,2025-01-12 10:00:00,2025-01-12 10:00:00
+13,Tennis Tournament,Beginner to intermediate level,sports,published,Ariake Tennis Forest,2025-03-10 09:00:00,2025-03-10 17:00:00,32,2025-01-13 11:00:00,2025-01-13 11:00:00
+14,Okinawa Diving Tour,Beautiful sea diving experience,travel,draft,Okinawa,2025-04-01 08:00:00,2025-04-03 18:00:00,16,2025-01-14 12:00:00,2025-01-14 12:00:00
+15,French Cooking Class,Learn authentic French cuisine,food,published,Ebisu,2025-03-20 17:00:00,2025-03-20 21:00:00,18,2025-01-15 13:00:00,2025-01-15 13:00:00
+16,JavaScript ES2024 Study Group,Latest JavaScript features,tech,published,Shibuya,2025-03-12 19:00:00,2025-03-12 21:30:00,25,2025-01-16 14:00:00,2025-01-16 14:00:00
+17,Rock Concert,Emerging rock band performance,music,published,Zepp Tokyo,2025-03-25 19:00:00,2025-03-25 22:00:00,150,2025-01-17 15:00:00,2025-01-17 15:00:00
+18,Badminton Tournament,Working adults badminton tournament,sports,published,Yoyogi Gymnasium,2025-04-05 09:00:00,2025-04-05 17:00:00,48,2025-01-18 16:00:00,2025-01-18 16:00:00
+19,Mount Fuji Climbing,From 5th station to summit,travel,published,Mount Fuji,2025-05-01 06:00:00,2025-05-02 15:00:00,20,2025-01-19 17:00:00,2025-01-19 17:00:00
+20,Italian Cooking Workshop,Pasta and pizza making experience,food,published,Nakameguro,2025-04-10 16:00:00,2025-04-10 20:00:00,22,2025-01-20 18:00:00,2025-01-20 18:00:00
+21,Docker Introduction Seminar,Container technology basics,tech,draft,Shinjuku,2025-04-15 14:00:00,2025-04-15 18:00:00,30,2025-01-21 19:00:00,2025-01-21 19:00:00
+22,Opera Appreciation,La Traviata performance viewing,music,published,New National Theatre,2025-04-20 18:30:00,2025-04-20 21:30:00,80,2025-01-22 20:00:00,2025-01-22 20:00:00
+23,Table Tennis Tournament,Table tennis enthusiast exchange,sports,published,Tokyo Gymnasium,2025-04-25 10:00:00,2025-04-25 16:00:00,64,2025-01-23 21:00:00,2025-01-23 21:00:00
+24,Hokkaido Gourmet Tour,Enjoy seafood and ramen,travel,published,Sapporo,2025-05-10 12:00:00,2025-05-12 18:00:00,35,2025-01-24 22:00:00,2025-01-24 22:00:00
+25,Japanese Cooking Class,Learn seasonal Japanese cuisine,food,published,Tsukiji,2025-05-05 15:00:00,2025-05-05 19:00:00,16,2025-01-25 08:00:00,2025-01-25 08:00:00
+26,AWS Cloud Study Group,Cloud infrastructure basics,tech,published,Shinagawa,2025-05-15 13:00:00,2025-05-15 17:00:00,40,2025-01-26 09:00:00,2025-01-26 09:00:00
+27,Acoustic Live,Singer-songwriter live performance,music,published,Shimokitazawa,2025-05-20 20:00:00,2025-05-20 22:30:00,60,2025-01-27 10:00:00,2025-01-27 10:00:00
+28,Golf Competition,Beginner-friendly golf tournament,sports,published,Chiba Golf Course,2025-05-25 08:00:00,2025-05-25 17:00:00,24,2025-01-28 11:00:00,2025-01-28 11:00:00
+29,Kyushu Hot Spring Tour,Beppu and Yufuin hot spring tour,travel,draft,Oita Prefecture,2025-06-01 10:00:00,2025-06-03 16:00:00,28,2025-01-29 12:00:00,2025-01-29 12:00:00
+30,Thai Cooking Class,Make authentic Thai cuisine,food,published,Omotesando,2025-06-05 17:30:00,2025-06-05 20:30:00,20,2025-01-30 13:00:00,2025-01-30 13:00:00
+31,Vue.js Hands-on,Vue 3 practical development,tech,published,Akihabara,2025-06-10 10:00:00,2025-06-10 17:00:00,25,2025-01-31 14:00:00,2025-01-31 14:00:00
+32,Jazz Session,Amateur musician exchange,music,published,Roppongi,2025-06-15 19:30:00,2025-06-15 23:00:00,30,2025-02-01 15:00:00,2025-02-01 15:00:00
+33,Swimming Competition,Citizen pool tournament,sports,published,Tatsumi International Swimming Center,2025-06-20 09:00:00,2025-06-20 15:00:00,50,2025-02-02 16:00:00,2025-02-02 16:00:00
+34,Kanazawa Tourism Tour,Kenrokuen and Kanazawa Castle visit,travel,published,Kanazawa City,2025-06-25 09:00:00,2025-06-26 17:00:00,32,2025-02-03 17:00:00,2025-02-03 17:00:00
+35,Indian Cooking Class,Authentic curry from spices,food,published,Kanda,2025-07-01 18:00:00,2025-07-01 21:00:00,18,2025-02-04 18:00:00,2025-02-04 18:00:00
+36,Kubernetes Study Group,Container orchestration,tech,draft,Shibuya,2025-07-05 14:00:00,2025-07-05 18:00:00,35,2025-02-05 19:00:00,2025-02-05 19:00:00
+37,Chamber Music Concert,String quartet performance,music,published,Suntory Hall,2025-07-10 19:00:00,2025-07-10 21:00:00,120,2025-02-06 20:00:00,2025-02-06 20:00:00
+38,Basketball Tournament,3-on-3 tournament,sports,published,Odaiba,2025-07-15 10:00:00,2025-07-15 18:00:00,48,2025-02-07 21:00:00,2025-02-07 21:00:00
+39,Hiroshima Peace Memorial Park Visit,Historical learning tour,travel,published,Hiroshima City,2025-07-20 09:00:00,2025-07-21 17:00:00,40,2025-02-08 22:00:00,2025-02-08 22:00:00
+40,Korean Cooking Class,Kimchi and bulgogi making,food,published,Shin-Okubo,2025-07-25 16:00:00,2025-07-25 19:00:00,24,2025-02-09 08:00:00,2025-02-09 08:00:00
+41,GraphQL API Development,Modern API design,tech,published,Ikebukuro,2025-08-01 13:00:00,2025-08-01 17:00:00,30,2025-02-10 09:00:00,2025-02-10 09:00:00
+42,EDM Party,Electronic dance music event,music,published,WOMB,2025-08-05 22:00:00,2025-08-06 04:00:00,200,2025-02-11 10:00:00,2025-02-11 10:00:00
+43,Baseball Game Viewing,Tokyo Dome game viewing,sports,published,Tokyo Dome,2025-08-10 18:00:00,2025-08-10 21:00:00,100,2025-02-12 11:00:00,2025-02-12 11:00:00
+44,Mount Koya Pilgrimage,Spiritual journey,travel,published,Wakayama Prefecture,2025-08-15 08:00:00,2025-08-16 17:00:00,20,2025-02-13 12:00:00,2025-02-13 12:00:00
+45,French Dessert Class,Macaron and eclair making,food,published,Jiyugaoka,2025-08-20 14:00:00,2025-08-20 17:00:00,16,2025-02-14 13:00:00,2025-02-14 13:00:00
+46,Machine Learning MLOps Study,ML for production,tech,published,Shinagawa,2025-08-25 10:00:00,2025-08-25 17:00:00,40,2025-02-15 14:00:00,2025-02-15 14:00:00
+47,Folk Song Live,Nostalgic folk songs,music,published,Shibuya,2025-08-30 19:00:00,2025-08-30 21:30:00,80,2025-02-16 15:00:00,2025-02-16 15:00:00
+48,Mountain Hiking,Mount Takao trekking,sports,published,Mount Takao,2025-09-01 08:00:00,2025-09-01 16:00:00,30,2025-02-17 16:00:00,2025-02-17 16:00:00
+49,Nara Ancient Capital Walk,Todaiji and Kasuga Taisha visit,travel,draft,Nara City,2025-09-05 10:00:00,2025-09-05 17:00:00,25,2025-02-18 17:00:00,2025-02-18 17:00:00
+50,Chinese Cooking Class,Dim sum and stir-fry making,food,published,Yokohama Chinatown,2025-09-10 17:00:00,2025-09-10 20:00:00,22,2025-02-19 18:00:00,2025-02-19 18:00:00
+51,TypeScript Practical Course,Type-safe web development,tech,published,Shinjuku,2025-09-15 13:00:00,2025-09-15 18:00:00,28,2025-02-20 19:00:00,2025-02-20 19:00:00
+52,Symphony Concert,Berlin Philharmonic Japan tour,music,published,NHK Hall,2025-09-20 19:30:00,2025-09-20 21:30:00,300,2025-02-21 20:00:00,2025-02-21 20:00:00
+53,Futsal Tournament,Indoor soccer tournament,sports,published,Futsal Court,2025-09-25 09:00:00,2025-09-25 17:00:00,32,2025-02-22 21:00:00,2025-02-22 21:00:00
+54,Ise Grand Shrine Visit,Power spot pilgrimage,travel,published,Ise City Mie Prefecture,2025-09-30 07:00:00,2025-10-01 18:00:00,35,2025-02-23 22:00:00,2025-02-23 22:00:00
+55,Spanish Cooking Class,Paella and tapas making,food,published,Daikanyama,2025-10-05 16:30:00,2025-10-05 20:00:00,20,2025-02-24 08:00:00,2025-02-24 08:00:00
+56,Next.js App Router Study,Latest React development,tech,draft,Shibuya,2025-10-10 14:00:00,2025-10-10 18:00:00,32,2025-02-25 09:00:00,2025-02-25 09:00:00
+57,Karaoke Competition,Sing and have fun together,music,published,Shinjuku Kabukicho,2025-10-15 19:00:00,2025-10-15 23:00:00,50,2025-02-26 10:00:00,2025-02-26 10:00:00
+58,Bowling Tournament,Aim for strikes!,sports,published,Bowling Alley,2025-10-20 14:00:00,2025-10-20 18:00:00,40,2025-02-27 11:00:00,2025-02-27 11:00:00
+59,Kamakura Temple Tour,Historic ancient capital walk,travel,published,Kamakura City,2025-10-25 09:30:00,2025-10-25 17:30:00,30,2025-02-28 12:00:00,2025-02-28 12:00:00
+60,Italian Dessert Class,Tiramisu and gelato making,food,published,Kichijoji,2025-10-30 15:00:00,2025-10-30 18:00:00,18,2025-03-01 13:00:00,2025-03-01 13:00:00
+61,Rust Programming Introduction,Systems programming language,tech,published,Akihabara,2025-11-01 10:00:00,2025-11-01 17:00:00,25,2025-03-02 14:00:00,2025-03-02 14:00:00
+62,Hip Hop Live,Emerging artist performance,music,published,LIQUIDROOM,2025-11-05 20:00:00,2025-11-05 23:00:00,150,2025-03-03 15:00:00,2025-03-03 15:00:00
+63,Archery Experience,Kyudo experience class,sports,published,Budokan,2025-11-10 10:00:00,2025-11-10 16:00:00,20,2025-03-04 16:00:00,2025-03-04 16:00:00
+64,Kumano Kodo Walking,Walk the World Heritage trail,travel,published,Wakayama Prefecture,2025-11-15 08:00:00,2025-11-16 17:00:00,25,2025-03-05 17:00:00,2025-03-05 17:00:00
+65,Mexican Cooking Class,Tacos and guacamole making,food,published,Harajuku,2025-11-20 17:00:00,2025-11-20 20:00:00,24,2025-03-06 18:00:00,2025-03-06 18:00:00
+66,AI ChatGPT Utilization Seminar,AI for business efficiency,tech,published,Otemachi,2025-11-25 13:00:00,2025-11-25 17:00:00,50,2025-03-07 19:00:00,2025-03-07 19:00:00
+67,Blues Live,Authentic blues session,music,published,Shinjuku Pit Inn,2025-11-30 20:30:00,2025-11-30 23:30:00,70,2025-03-08 20:00:00,2025-03-08 20:00:00
+68,Ski Snowboard,Enjoy winter sports,sports,published,Karuizawa,2025-12-05 07:00:00,2025-12-06 18:00:00,40,2025-03-09 21:00:00,2025-03-09 21:00:00
+69,Shirakawa-go Gassho-zukuri Visit,Visit World Heritage village,travel,draft,Shirakawa Village Gifu,2025-12-10 09:00:00,2025-12-11 16:00:00,30,2025-03-10 22:00:00,2025-03-10 22:00:00
+70,Christmas Cake Class,Handmade Christmas cake,food,published,Futakotamagawa,2025-12-15 14:00:00,2025-12-15 18:00:00,20,2025-03-11 08:00:00,2025-03-11 08:00:00
+71,Blockchain Development Introduction,Distributed ledger technology basics,tech,published,Roppongi,2025-12-20 10:00:00,2025-12-20 17:00:00,30,2025-03-12 09:00:00,2025-03-12 09:00:00
+72,Christmas Concert,Holy night music concert,music,published,Tokyo International Forum,2025-12-24 19:00:00,2025-12-24 21:30:00,500,2025-03-13 10:00:00,2025-03-13 10:00:00
+73,Year-end Bowling Tournament,Last bowling of the year,sports,published,Shinagawa Bowl,2025-12-28 15:00:00,2025-12-28 19:00:00,36,2025-03-14 11:00:00,2025-03-14 11:00:00
+74,New Year Shrine Visit Tour,New Year worship at Meiji Shrine,travel,published,Meiji Shrine,2026-01-01 10:00:00,2026-01-01 14:00:00,100,2025-03-15 12:00:00,2025-03-15 12:00:00
+75,New Year Party Cooking Class,Osechi cuisine making experience,food,published,Ginza,2026-01-05 16:00:00,2026-01-05 20:00:00,16,2025-03-16 13:00:00,2025-03-16 13:00:00
+76,Go Language Introduction,Concurrent programming,tech,draft,Shibuya,2026-01-10 13:00:00,2026-01-10 18:00:00,28,2025-03-17 14:00:00,2025-03-17 14:00:00
+77,New Year Concert,Music concert celebrating new year,music,published,Suntory Hall,2026-01-12 15:00:00,2026-01-12 17:30:00,200,2025-03-18 15:00:00,2025-03-18 15:00:00
+78,New Year Marathon,New year health building,sports,published,Imperial Palace area,2026-01-15 09:00:00,2026-01-15 12:00:00,150,2025-03-19 16:00:00,2025-03-19 16:00:00
+79,Hakone Ekiden Viewing Tour,Watch New Year tradition,travel,published,Hakone,2026-01-02 08:00:00,2026-01-03 17:00:00,45,2025-03-20 17:00:00,2025-03-20 17:00:00
+80,Valentine Chocolate Class,Handmade chocolate making,food,published,Omotesando,2026-02-10 15:00:00,2026-02-10 18:00:00,22,2025-03-21 18:00:00,2025-03-21 18:00:00
+81,Flutter Mobile Development,Cross-platform development,tech,published,Shinjuku,2026-02-15 10:00:00,2026-02-15 17:00:00,35,2025-03-22 19:00:00,2025-03-22 19:00:00
+82,Valentine Concert,Love-themed music concert,music,published,Orchard Hall,2026-02-14 19:30:00,2026-02-14 21:30:00,150,2025-03-23 20:00:00,2025-03-23 20:00:00
+83,Ice Skating Experience,Ice skating class,sports,published,Ice Skating Rink,2026-02-20 14:00:00,2026-02-20 17:00:00,30,2025-03-24 21:00:00,2025-03-24 21:00:00
+84,Kawazu Cherry Blossom Festival,See early blooming cherry blossoms,travel,published,Kawazu Town Shizuoka,2026-02-25 10:00:00,2026-02-25 16:00:00,35,2025-03-25 22:00:00,2025-03-25 22:00:00
+85,Girls Day Cooking Class,Make spring Japanese cuisine,food,published,Asakusa,2026-03-01 16:30:00,2026-03-01 19:30:00,18,2025-03-26 08:00:00,2025-03-26 08:00:00
+86,Svelte Workshop,Lightweight frontend framework,tech,published,Ikebukuro,2026-03-05 13:00:00,2026-03-05 18:00:00,25,2025-03-27 09:00:00,2025-03-27 09:00:00
+87,Spring Concert,Cherry blossom themed music concert,music,published,Kioi Hall,2026-03-10 19:00:00,2026-03-10 21:00:00,120,2025-03-28 10:00:00,2025-03-28 10:00:00
+88,Spring Sports Day,Exercise together happily,sports,published,Yoyogi Park,2026-03-15 10:00:00,2026-03-15 16:00:00,60,2025-03-29 11:00:00,2025-03-29 11:00:00
+89,Cherry Blossom Picnic,Hanami under cherry blossoms,travel,draft,Ueno Park,2026-03-30 11:00:00,2026-03-30 16:00:00,50,2025-03-30 12:00:00,2025-03-30 12:00:00
+90,Spring Vegetable Cooking Class,Cuisine using seasonal vegetables,food,published,Tsukiji,2026-04-05 17:00:00,2026-04-05 20:00:00,20,2025-03-31 13:00:00,2025-03-31 13:00:00
+91,Deno Runtime Study Group,Next-generation JavaScript runtime,tech,published,Akihabara,2026-04-10 14:00:00,2026-04-10 18:00:00,30,2025-04-01 14:00:00,2025-04-01 14:00:00
+92,Spring Festival Live,Music festival with falling cherry blossoms,music,published,Hibiya Open-Air Concert Hall,2026-04-12 17:00:00,2026-04-12 21:00:00,300,2025-04-02 15:00:00,2025-04-02 15:00:00
+93,Spring Hiking,Walk in fresh green mountains,sports,published,Okutama,2026-04-15 08:00:00,2026-04-15 17:00:00,25,2025-04-03 16:00:00,2025-04-03 16:00:00
+94,Cherry Blossom Spot Tour,Kanto cherry blossom spots tour,travel,published,Kanto Region,2026-04-01 09:00:00,2026-04-02 18:00:00,40,2025-04-04 17:00:00,2025-04-04 17:00:00
+95,Bento Making Class,Spring picnic bento,food,published,Ebisu,2026-04-20 15:00:00,2026-04-20 18:00:00,24,2025-04-05 18:00:00,2025-04-05 18:00:00
+96,WebAssembly Introduction,Native performance in browser,tech,draft,Shinagawa,2026-04-25 10:00:00,2026-04-25 17:00:00,32,2025-04-06 19:00:00,2025-04-06 19:00:00
+97,Golden Week Live,Enjoy holidays with music,music,published,Tokyo Dome City,2026-05-03 18:00:00,2026-05-03 22:00:00,400,2025-04-07 20:00:00,2025-04-07 20:00:00
+98,Children Day Sports Festival,Family sports day,sports,published,Tamagawa Riverbank,2026-05-05 10:00:00,2026-05-05 15:00:00,80,2025-04-08 21:00:00,2025-04-08 21:00:00
+99,Golden Week Travel,Domestic travel during holidays,travel,published,Izu Peninsula,2026-05-01 09:00:00,2026-05-05 17:00:00,30,2025-04-09 22:00:00,2025-04-09 22:00:00
+100,BBQ Party,Enjoy BBQ together,food,published,Odaiba Seaside Park,2026-05-10 11:00:00,2026-05-10 16:00:00,50,2025-04-10 08:00:00,2025-04-10 08:00:00

@@ -13,10 +13,10 @@ require "rb_sys/extensiontask"
 
 task build: :compile
 
-GEMSPEC = Gem::Specification.load("r_csv.gemspec")
+GEMSPEC = Gem::Specification.load("rbcsv.gemspec")
 
-RbSys::ExtensionTask.new("r_csv", GEMSPEC) do |ext|
-  ext.lib_dir = "lib/r_csv"
+RbSys::ExtensionTask.new("rbcsv", GEMSPEC) do |ext|
+  ext.lib_dir = "lib/rbcsv"
 end
 
 task default: %i[compile spec rubocop]
