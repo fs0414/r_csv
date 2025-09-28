@@ -1,10 +1,19 @@
 ## [Unreleased]
 
+## [0.1.8] - 2025-01-28
+
 ### Added
 - CSV file writing functionality with `RbCsv.write(file_path, data)` method
 - Comprehensive data validation (empty data check, field count consistency)
 - Enhanced error handling for write operations (permission errors, invalid data)
-- Full test coverage for write functionality
+- Full test coverage for write functionality with executable test script
+
+### Fixed
+- **CRITICAL**: Fixed special character handling in CSV parsing
+  - Removed problematic `escape_sanitize` function that interfered with standard CSV escaping
+  - Now properly preserves backslashes, newlines, tabs, and other special characters
+  - Ensures perfect round-trip fidelity for write/read operations
+- Updated RSpec tests to reflect correct CSV parsing behavior
 
 ## [0.1.7] - 2025-01-28
 
