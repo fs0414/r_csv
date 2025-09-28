@@ -3,7 +3,7 @@ mod parser;
 mod ruby_api;
 
 use magnus::{Object, Ruby};
-use ruby_api::{parse, parse_trim, read, read_trim};
+use ruby_api::{parse, parse_trim, read, read_trim, write};
 
 #[magnus::init]
 fn init(ruby: &Ruby) -> Result<(), magnus::Error> {
@@ -13,6 +13,7 @@ fn init(ruby: &Ruby) -> Result<(), magnus::Error> {
     module.define_singleton_method("parse!", magnus::function!(parse_trim, 1))?;
     module.define_singleton_method("read", magnus::function!(read, 1))?;
     module.define_singleton_method("read!", magnus::function!(read_trim, 1))?;
+    module.define_singleton_method("write", magnus::function!(write, 2))?;
 
     Ok(())
 }

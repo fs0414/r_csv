@@ -1,5 +1,40 @@
 ## [Unreleased]
 
+### Added
+- CSV file writing functionality with `RbCsv.write(file_path, data)` method
+- Comprehensive data validation (empty data check, field count consistency)
+- Enhanced error handling for write operations (permission errors, invalid data)
+- Full test coverage for write functionality
+
+## [0.1.7] - 2025-01-28
+
+### Changed
+- **BREAKING**: API redesigned to use function-based approach with `!` suffix for trim functionality
+  - `parse(csv)` and `parse!(csv)` for regular and trimmed parsing
+  - `read(file)` and `read!(file)` for regular and trimmed file reading
+  - Removed option-based API in favor of cleaner function separation
+- Major internal refactoring: split code into modular structure
+  - `parser.rs`: Core CSV parsing logic
+  - `ruby_api.rs`: Ruby bindings and API functions
+  - `error.rs`: Error handling and custom error types
+- Updated to follow Ruby naming conventions with `!` suffix for modified behavior
+
+### Added
+- Comprehensive error handling with detailed error messages
+- Support for various CSV edge cases (empty fields, special characters)
+- Extensive test coverage for all parsing scenarios
+- Improved documentation with DEVELOPMENT.md enhancements
+
+### Fixed
+- Memory efficiency improvements in CSV parsing
+- Better handling of UTF-8 encoded data
+- Consistent error reporting across all functions
+
+### Development
+- Added detailed project structure documentation
+- Enhanced build and test procedures in DEVELOPMENT.md
+- Improved release process documentation
+
 ## [0.1.6] - 2025-09-27
 
 ### Changed

@@ -4,11 +4,9 @@ use std::path::Path;
 
 /// CSV解析のオプション設定
 #[derive(Debug, Clone)]
+#[allow(dead_code)]
 pub struct CsvParseOptions {
     pub trim: bool,
-    // 将来的な拡張用
-    // pub headers: bool,
-    // pub delimiter: char,
 }
 
 impl Default for CsvParseOptions {
@@ -35,13 +33,11 @@ pub fn parse_csv_core(input: &str, trim_config: csv::Trim) -> Result<Vec<Vec<Str
         return Err(CsvError::empty_data());
     }
 
-    // エスケープシーケンスを実際の文字に変換
-    let processed = escape_sanitize(input);
-
+    // CSV crate に任せて適切なパースを行う（escape_sanitize は削除）
     let mut reader = csv::ReaderBuilder::new()
         .has_headers(false) // ヘッダーを無効にして、すべての行を読み込む
         .trim(trim_config)
-        .from_reader(processed.as_bytes());
+        .from_reader(input.as_bytes());
 
     let mut records = Vec::new();
 
@@ -77,13 +73,13 @@ pub fn parse_csv_core(input: &str, trim_config: csv::Trim) -> Result<Vec<Vec<Str
 }
 
 /// オプション設定を使ったCSV解析（文字列用）
-pub fn parse_csv_with_options(input: &str, options: &CsvParseOptions) -> Result<Vec<Vec<String>>, CsvError> {
+pub fn _parse_csv_with_options(input: &str, options: &CsvParseOptions) -> Result<Vec<Vec<String>>, CsvError> {
     let trim_config = if options.trim { csv::Trim::All } else { csv::Trim::None };
     parse_csv_core(input, trim_config)
 }
 
 /// オプション設定を使ったCSV解析（ファイル用）
-pub fn parse_csv_file_with_options(file_path: &str, options: &CsvParseOptions) -> Result<Vec<Vec<String>>, CsvError> {
+pub fn _parse_csv_file_with_options(file_path: &str, options: &CsvParseOptions) -> Result<Vec<Vec<String>>, CsvError> {
     let trim_config = if options.trim { csv::Trim::All } else { csv::Trim::None };
     parse_csv_file(file_path, trim_config)
 }
@@ -184,4 +180,127 @@ mod tests {
         assert_eq!(records[1], vec!["Alice", "25", "Tokyo"]);
         assert_eq!(records[2], vec!["Bob", "30", "Osaka"]);
     }
+
+    #[test]
+    fn test_write_csv_file_basic() {
+
+        let temp_path = "/tmp/test_write_csv.csv";
+        let test_data = vec![
+            vec!["name".to_string(), "age".to_string(), "city".to_string()],
+            vec!["Alice".to_string(), "25".to_string(), "Tokyo".to_string()],
+            vec!["Bob".to_string(), "30".to_string(), "Osaka".to_string()],
+        ];
+
+        // ファイルに書き込み
+        let result = write_csv_file(temp_path, &test_data);
+        assert!(result.is_ok(), "Write should succeed");
+
+        // 書き込んだファイルを読み込んで検証
+        let content = std::fs::read_to_string(temp_path).expect("Failed to read written file");
+        let expected = "name,age,city\nAlice,25,Tokyo\nBob,30,Osaka\n";
+        assert_eq!(content, expected);
+
+        // クリーンアップ
+        let _ = std::fs::remove_file(temp_path);
+    }
+
+    #[test]
+    fn test_write_csv_file_empty_data() {
+        let temp_path = "/tmp/test_write_empty.csv";
+        let empty_data: Vec<Vec<String>> = vec![];
+
+        let result = write_csv_file(temp_path, &empty_data);
+        assert!(result.is_err());
+        if let Err(e) = result {
+            assert!(e.to_string().contains("CSV data is empty"));
+        }
+    }
+
+    #[test]
+    fn test_write_csv_file_field_count_mismatch() {
+        let temp_path = "/tmp/test_write_mismatch.csv";
+        let inconsistent_data = vec![
+            vec!["name".to_string(), "age".to_string()],
+            vec!["Alice".to_string(), "25".to_string(), "Tokyo".to_string()], // 3 fields instead of 2
+        ];
+
+        let result = write_csv_file(temp_path, &inconsistent_data);
+        assert!(result.is_err());
+        if let Err(e) = result {
+            assert!(e.to_string().contains("Field count mismatch"));
+        }
+    }
+
+    #[test]
+    fn test_write_csv_file_permission_denied() {
+        // 書き込み権限のないパスをテスト（rootディレクトリ）
+        let result = write_csv_file("/root/test.csv", &vec![vec!["test".to_string()]]);
+        assert!(result.is_err());
+        if let Err(e) = result {
+            // Permission deniedまたはParent directory does not existのいずれかになる
+            let error_msg = e.to_string();
+            assert!(error_msg.contains("Permission denied") || error_msg.contains("Parent directory does not exist"));
+        }
+    }
+}
+
+/// CSVデータをファイルに書き込む
+pub fn write_csv_file(file_path: &str, data: &[Vec<String>]) -> Result<(), CsvError> {
+    // データ検証：空配列チェック
+    if data.is_empty() {
+        return Err(CsvError::invalid_data("CSV data is empty"));
+    }
+
+    // データ検証：各行のフィールド数一貫性チェック
+    if data.len() > 1 {
+        let expected_len = data[0].len();
+        for (line_num, row) in data.iter().enumerate() {
+            if row.len() != expected_len {
+                let error_msg = format!(
+                    "Field count mismatch at line {}: expected {} fields, got {} fields",
+                    line_num + 1,
+                    expected_len,
+                    row.len()
+                );
+                return Err(CsvError::invalid_data(error_msg));
+            }
+        }
+    }
+
+    // ファイルパス検証：親ディレクトリの存在確認
+    let path = Path::new(file_path);
+    if let Some(parent) = path.parent() {
+        if !parent.exists() {
+            return Err(CsvError::io(format!("Parent directory does not exist: {}", parent.display())));
+        }
+    }
+
+    // CSV Writer作成とデータ書き込み
+    let file = match fs::File::create(path) {
+        Ok(file) => file,
+        Err(e) => {
+            if e.kind() == std::io::ErrorKind::PermissionDenied {
+                return Err(CsvError::write_permission(format!("Permission denied: {}", file_path)));
+            }
+            return Err(CsvError::io(format!("Failed to create file '{}': {}", file_path, e)));
+        }
+    };
+
+    let mut writer = csv::WriterBuilder::new()
+        .has_headers(false)
+        .from_writer(file);
+
+    // データ書き込み
+    for row in data {
+        if let Err(e) = writer.write_record(row) {
+            return Err(CsvError::from(e));
+        }
+    }
+
+    // ファイルフラッシュ：データの確実な書き込み保証
+    if let Err(e) = writer.flush() {
+        return Err(CsvError::io(format!("Failed to flush data to file '{}': {}", file_path, e)));
+    }
+
+    Ok(())
 }

@@ -1,8 +1,6 @@
-# RCsv
+# RbCsv
 
-TODO: Delete this and the text below, and describe your gem
-
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/r_csv`. To experiment with that code, run `bin/console` for an interactive prompt.
+A fast CSV processing library for Ruby, built with Rust for high performance. RbCsv provides simple, efficient methods for parsing CSV strings, reading CSV files, and writing CSV data to files.
 
 ## Installation
 
@@ -22,7 +20,70 @@ gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
 
 ## Usage
 
-TODO: Write usage instructions here
+### Parsing CSV strings
+
+```ruby
+require 'rbcsv'
+
+# Parse CSV string
+csv_data = "name,age,city\nAlice,25,Tokyo\nBob,30,Osaka"
+result = RbCsv.parse(csv_data)
+# => [["name", "age", "city"], ["Alice", "25", "Tokyo"], ["Bob", "30", "Osaka"]]
+
+# Parse CSV with automatic whitespace trimming
+csv_with_spaces = " name , age , city \n Alice , 25 , Tokyo "
+result = RbCsv.parse!(csv_with_spaces)
+# => [["name", "age", "city"], ["Alice", "25", "Tokyo"]]
+```
+
+### Reading CSV files
+
+```ruby
+# Read CSV file
+result = RbCsv.read("data.csv")
+# => [["name", "age", "city"], ["Alice", "25", "Tokyo"], ["Bob", "30", "Osaka"]]
+
+# Read CSV file with automatic whitespace trimming
+result = RbCsv.read!("data_with_spaces.csv")
+# => [["name", "age", "city"], ["Alice", "25", "Tokyo"], ["Bob", "30", "Osaka"]]
+```
+
+### Writing CSV files
+
+```ruby
+# Prepare data
+data = [
+  ["name", "age", "city"],
+  ["Alice", "25", "Tokyo"],
+  ["Bob", "30", "Osaka"]
+]
+
+# Write CSV data to file
+RbCsv.write("output.csv", data)
+# Creates a file with:
+# name,age,city
+# Alice,25,Tokyo
+# Bob,30,Osaka
+```
+
+### Error Handling
+
+RbCsv provides detailed error messages for various scenarios:
+
+```ruby
+# Empty data
+RbCsv.write("output.csv", [])
+# => RuntimeError: Invalid Data Error: CSV data is empty
+
+# Inconsistent field count
+data = [["name", "age"], ["Alice", "25", "Tokyo"]]  # 3 fields in second row
+RbCsv.write("output.csv", data)
+# => RuntimeError: Invalid Data Error: Field count mismatch at line 2: expected 2 fields, got 3 fields
+
+# File not found
+RbCsv.read("nonexistent.csv")
+# => RuntimeError: IO Error: File not found: nonexistent.csv
+```
 
 ## Development
 

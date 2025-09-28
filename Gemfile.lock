@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rbcsv (0.1.6)
+    rbcsv (0.1.7)
       rb_sys (~> 0.9.91)
 
 GEM

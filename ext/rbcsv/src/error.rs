@@ -19,6 +19,10 @@ pub enum ErrorKind {
     FieldCountMismatch,
     // 空のCSVデータ
     EmptyData,
+    // 書き込み権限エラー
+    WritePermission,
+    // 無効なデータエラー
+    InvalidData,
     // その他のエラー
     #[allow(dead_code)]
     Other,
@@ -32,6 +36,8 @@ impl fmt::Display for CsvError {
             ErrorKind::Encoding => write!(f, "Encoding Error: {}", self.message),
             ErrorKind::FieldCountMismatch => write!(f, "Field Count Mismatch: {}", self.message),
             ErrorKind::EmptyData => write!(f, "Empty Data: {}", self.message),
+            ErrorKind::WritePermission => write!(f, "Write Permission Error: {}", self.message),
+            ErrorKind::InvalidData => write!(f, "Invalid Data Error: {}", self.message),
             ErrorKind::Other => write!(f, "Error: {}", self.message),
         }
     }
@@ -69,6 +75,14 @@ impl CsvError {
 
     pub fn empty_data() -> Self {
         Self::new(ErrorKind::EmptyData, "CSV data is empty")
+    }
+
+    pub fn write_permission(message: impl Into<String>) -> Self {
+        Self::new(ErrorKind::WritePermission, message)
+    }
+
+    pub fn invalid_data(message: impl Into<String>) -> Self {
+        Self::new(ErrorKind::InvalidData, message)
     }
 }
 

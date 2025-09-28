@@ -16,39 +16,6 @@
 - **Linux**: x86_64 / aarch64
 - **Windows**: x86_64（実験的サポート）
 
-## プロジェクト構成
-
-```
-r_csv/
-├── lib/
-│   ├── rbcsv.rb                    # メインのRubyエントリーポイント
-│   └── rbcsv/
-│       ├── version.rb              # バージョン定義
-│       └── rbcsv.bundle            # コンパイル済みネイティブ拡張（生成される）
-├── ext/
-│   └── rbcsv/
-│       ├── src/
-│       │   ├── lib.rs              # Rust拡張のエントリーポイント、Magnus初期化
-│       │   ├── parser.rs           # CSV解析コア、CsvParseOptions定義
-│       │   ├── ruby_api.rs         # Ruby APIバインディング、オプション処理
-│       │   └── error.rs            # エラーハンドリング
-│       ├── Cargo.toml              # Rust依存関係（Magnus 0.8.1使用）
-│       └── extconf.rb              # Ruby拡張ビルド設定
-├── spec/
-│   ├── rbcsv_spec.rb               # メインのRubyテスト
-│   └── spec_helper.rb              # テスト設定
-├── docs/                           # ドキュメント
-├── target/                         # Rustビルド出力（git無視）
-├── tmp/                            # Ruby拡張ビルド中間ファイル（git無視）
-├── *.gem                           # ビルド済みgemファイル
-├── rbcsv.gemspec                   # Gem仕様
-├── Rakefile                        # ビルドタスク（rb_sys使用）
-├── Gemfile                         # Ruby依存関係
-├── Cargo.toml                      # ワークスペース設定
-├── CHANGELOG.md                    # 変更履歴
-├── README.md                       # 使用法ガイド
-└── DEVELOPMENT.md                  # このファイル
-```
 
 ## 開発環境のセットアップ
 
@@ -77,14 +44,98 @@ bundle exec rake compile
 
 ### 4. 動作確認
 
+#### CSV パース機能
+
 ```bash
-# 基本的な動作確認
-ruby -I lib -e "require 'rbcsv'; p RbCsv.parse('a,b\n1,2', {})"
+# 基本的なパース
+ruby -I lib -e "require 'rbcsv'; p RbCsv.parse('a,b\n1,2')"
 # 期待される出力: [["a", "b"], ["1", "2"]]
 
-# オプション付きテスト
-ruby -I lib -e "require 'rbcsv'; p RbCsv.parse(' a , b \n 1 , 2 ', {trim: true})"
+# trim機能付きパース
+ruby -I lib -e "require 'rbcsv'; p RbCsv.parse!(' a , b \n 1 , 2 ')"
 # 期待される出力: [["a", "b"], ["1", "2"]]
+```
+
+#### CSV ファイル読み込み機能
+
+```bash
+# CSVファイル読み込み
+ruby -I lib -e "require 'rbcsv'; p RbCsv.read('spec/fixtures/test.csv')"
+# 期待される出力: [["name", "age", "city"], ["Alice", "25", "Tokyo"], ...]
+
+# trim機能付きファイル読み込み
+ruby -I lib -e "require 'rbcsv'; p RbCsv.read!('spec/fixtures/test_with_spaces.csv')"
+# 期待される出力: [["name", "age", "city"], ["Alice", "25", "Tokyo"], ...]
+```
+
+#### CSV ファイル書き込み機能
+
+```bash
+# 基本的なファイル書き込み
+ruby -I lib -e "
+require 'rbcsv'
+data = [['name', 'age', 'city'], ['Alice', '25', 'Tokyo'], ['Bob', '30', 'Osaka']]
+RbCsv.write('/tmp/test_output.csv', data)
+puts 'File written successfully!'
+puts File.read('/tmp/test_output.csv')
+"
+# 期待される出力:
+# File written successfully!
+# name,age,city
+# Alice,25,Tokyo
+# Bob,30,Osaka
+
+# 書き込み→読み込みの往復テスト
+ruby -I lib -e "
+require 'rbcsv'
+data = [['product', 'price'], ['Apple', '100'], ['Orange', '80']]
+RbCsv.write('/tmp/roundtrip.csv', data)
+result = RbCsv.read('/tmp/roundtrip.csv')
+puts 'Original data:'
+p data
+puts 'Read back data:'
+p result
+puts 'Match: #{data == result}'
+"
+# 期待される出力: Match: true
+
+# エラーハンドリングテスト（空データ）
+ruby -I lib -e "
+require 'rbcsv'
+begin
+  RbCsv.write('/tmp/empty.csv', [])
+rescue => e
+  puts 'Error caught: #{e.message}'
+end
+"
+# 期待される出力: Error caught: Invalid Data Error: CSV data is empty
+
+# エラーハンドリングテスト（フィールド数不一致）
+ruby -I lib -e "
+require 'rbcsv'
+begin
+  data = [['name', 'age'], ['Alice', '25', 'Tokyo']]
+  RbCsv.write('/tmp/mismatch.csv', data)
+rescue => e
+  puts 'Error caught: #{e.message}'
+end
+"
+# 期待される出力: Error caught: Invalid Data Error: Field count mismatch at line 2: expected 2 fields, got 3 fields
+
+# ファイル上書きテスト
+ruby -I lib -e "
+require 'rbcsv'
+# 最初のデータを書き込み
+RbCsv.write('/tmp/overwrite_test.csv', [['old'], ['data']])
+puts 'First write:'
+puts File.read('/tmp/overwrite_test.csv')
+
+# 新しいデータで上書き
+RbCsv.write('/tmp/overwrite_test.csv', [['new', 'data'], ['updated', 'content']])
+puts 'After overwrite:'
+puts File.read('/tmp/overwrite_test.csv')
+"
+# 期待される出力: 最初にold,dataが出力され、その後new,data形式に変わる
 ```
 
 ## ビルドプロセス
@@ -205,28 +256,71 @@ cd ../..
 
 ## API設計
 
-### 現在のAPI（v0.1.6+）
+### 現在のAPI（v0.1.7+）
 
 ```ruby
-# 統一されたオプションベースAPI
-RbCsv.parse(csv_string, options = {})
-RbCsv.read(file_path, options = {})
+# 関数ベースAPI（`!`サフィックスでtrim機能分離）
+RbCsv.parse(csv_string)          # 通常のパース
+RbCsv.parse!(csv_string)         # trim機能付きパース
+RbCsv.read(file_path)            # 通常のファイル読み込み
+RbCsv.read!(file_path)           # trim機能付きファイル読み込み
+RbCsv.write(file_path, data)     # CSVファイル書き込み
 
-# 利用可能なオプション
-options = {
-  trim: true/false    # 空白文字の除去（デフォルト: false）
-  # 将来の拡張:
-  # headers: true/false
-  # delimiter: ','
-}
+# データ形式
+data = [
+  ["header1", "header2", "header3"],  # ヘッダー行
+  ["value1", "value2", "value3"],     # データ行
+  # ...
+]
+```
+
+### API進化の履歴
+
+#### v0.1.6以前（オプションベース）
+```ruby
+RbCsv.parse(csv_string, {trim: true})
+RbCsv.read(file_path, {trim: false})
+```
+
+#### v0.1.7+（関数ベース）
+```ruby
+RbCsv.parse!(csv_string)  # trim版
+RbCsv.write(file_path, data)  # 新機能
 ```
 
 ### 実装アーキテクチャ
 
-1. **parser.rs**: CsvParseOptionsと核となるCSV解析機能
-2. **ruby_api.rs**: Rubyハッシュオプションの処理とMagnus API
+1. **parser.rs**: CSV解析・書き込みコア機能、エラーハンドリング
+2. **ruby_api.rs**: Ruby API関数、Magnus バインディング
 3. **lib.rs**: Magnus初期化と関数登録
-4. **error.rs**: エラーハンドリングとRuby例外の変換
+4. **error.rs**: 包括的なエラーハンドリングとRuby例外変換
+
+### 開発時の重要な注意点
+
+#### Ruby拡張ライブラリの特殊性
+
+```bash
+# ❌ 避けるべき: cargo buildは直接使用しない
+# cargo build は通常のRustライブラリ用で、Ruby拡張では適切にリンクされない
+
+# ✅ 推奨される開発フロー:
+cd ext/rbcsv
+cargo check           # 構文チェック（リンクなし）
+cargo test            # Rust単体テスト
+cd ../..
+bundle exec rake compile  # Ruby拡張ビルド
+bundle exec rspec     # Ruby統合テスト
+```
+
+#### ビルドコマンドの使い分け
+
+| コマンド | 用途 | 場所 | 備考 |
+|---------|------|------|------|
+| `cargo check` | 構文・型チェック | ext/rbcsv | 高速、リンクなし |
+| `cargo test` | Rust単体テスト | ext/rbcsv | Rubyシンボル不要 |
+| `cargo build` | **使用不可** | - | リンクエラーが発生 |
+| `bundle exec rake compile` | Ruby拡張ビルド | プロジェクトルート | 本番用ビルド |
+| `bundle exec rspec` | 統合テスト | プロジェクトルート | 完全な機能テスト |
 
 ## リリース手順
 
