@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "r_csv"
+require "rbcsv"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

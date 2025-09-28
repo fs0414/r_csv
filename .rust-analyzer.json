@@ -1,0 +1,8 @@
+{
+  "cargo": {
+    "allTargets": true
+  },
+  "checkOnSave": {
+    "allTargets": true
+  }
+}
