@@ -66,6 +66,39 @@ RbCsv.write("output.csv", data)
 # Bob,30,Osaka
 ```
 
+### Type-aware CSV processing
+
+RbCsv can automatically recognize and convert numeric values to their appropriate Ruby types (Integer, Float), while keeping text as strings:
+
+```ruby
+# Parse CSV with automatic type conversion
+csv_data = "name,age,score\nAlice,25,85.5\nBob,30,92"
+result = RbCsv.parse_typed(csv_data)
+# => [["name", "age", "score"], ["Alice", 25, 85.5], ["Bob", 30, 92]]
+# Note: age values are integers, score values are floats
+
+# Parse with trimming and type conversion
+csv_with_spaces = "  name  ,  age  ,  score  \n  Alice  ,  25  ,  85.5  "
+result = RbCsv.parse_typed!(csv_with_spaces)
+# => [["name", "age", "score"], ["Alice", 25, 85.5]]
+
+# Read CSV file with type conversion
+result = RbCsv.read_typed("data.csv")
+# Numeric values are automatically converted to Integer or Float
+
+# Read CSV file with trimming and type conversion
+result = RbCsv.read_typed!("data_with_spaces.csv")
+# Both trimming and type conversion are applied
+```
+
+#### Type conversion rules:
+
+- **Integers**: Strings like "123", "-456", "0" become Integer objects
+- **Floats**: Strings like "123.45", "-0.67", "1.23e-4" become Float objects
+- **Strings**: Everything else remains as String objects
+- **Empty values**: Empty strings remain as empty strings
+- **Priority**: Integer parsing is tried first, then Float, then kept as String
+
 ### Error Handling
 
 RbCsv provides detailed error messages for various scenarios:

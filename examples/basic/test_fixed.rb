@@ -1,4 +1,4 @@
-require_relative 'lib/r_csv'
+require_relative '../../lib/rbcsv'
 
 # バージョン確認
 # puts RCsv.version_info

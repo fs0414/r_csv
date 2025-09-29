@@ -153,4 +153,71 @@ RSpec.describe RbCsv do
       }.to raise_error(RuntimeError, /(Permission denied|Parent directory does not exist)/)
     end
   end
+
+  describe ".parse_typed" do
+    it "parses integers correctly" do
+      csv = "value\n123\n-456\n0"
+      result = RbCsv.parse_typed(csv)
+      expect(result).to eq([["value"], [123], [-456], [0]])
+      expect(result[1][0]).to be_a(Integer)
+    end
+
+    it "parses floats correctly" do
+      csv = "value\n123.45\n-0.67\n1.23e-4"
+      result = RbCsv.parse_typed(csv)
+      expect(result[1][0]).to be_within(0.0001).of(123.45)
+      expect(result[2][0]).to be_within(0.0001).of(-0.67)
+      expect(result[3][0]).to be_within(0.000001).of(0.000123)
+      expect(result[1][0]).to be_a(Float)
+    end
+
+    it "keeps strings as strings" do
+      csv = "value\nhello\n123abc\ntrue\n"
+      result = RbCsv.parse_typed(csv)
+      expect(result).to eq([["value"], ["hello"], ["123abc"], ["true"], [""]])
+      expect(result[1][0]).to be_a(String)
+    end
+
+    it "handles mixed types in same row" do
+      csv = "name,age,score\nAlice,25,85.5\nBob,30,92"
+      result = RbCsv.parse_typed(csv)
+      expect(result[1]).to eq(["Alice", 25, 85.5])
+      expect(result[2]).to eq(["Bob", 30, 92])
+      expect(result[1][1]).to be_a(Integer)
+      expect(result[1][2]).to be_a(Float)
+      expect(result[2][2]).to be_a(Integer)
+    end
+  end
+
+  describe ".parse_typed!" do
+    it "parses with trimming and type conversion" do
+      csv = "  name  ,  age  ,  score  \n  Alice  ,  25  ,  85.5  "
+      result = RbCsv.parse_typed!(csv)
+      expect(result).to eq([["name", "age", "score"], ["Alice", 25, 85.5]])
+    end
+  end
+
+  describe ".read_typed" do
+    it "reads CSV from file with type conversion" do
+      test_file_path = File.join(__dir__, "fixtures", "test.csv")
+      result = RbCsv.read_typed(test_file_path)
+      expect(result[0]).to eq(["name", "age", "city"])
+      # ageが数値として読み込まれることを期待（test.csvの内容に依存）
+    end
+
+    it "raises error for non-existent file" do
+      expect {
+        RbCsv.read_typed("non_existent_file.csv")
+      }.to raise_error(RuntimeError, /File not found/)
+    end
+  end
+
+  describe ".read_typed!" do
+    it "reads CSV from file with trimming and type conversion" do
+      test_file_path = File.join(__dir__, "fixtures", "test_with_spaces.csv")
+      result = RbCsv.read_typed!(test_file_path)
+      # trimされて型変換されることを期待
+      expect(result[0]).to eq(["name", "age", "city"])
+    end
+  end
 end

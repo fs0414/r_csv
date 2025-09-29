@@ -85,6 +85,62 @@ puts File.read('/tmp/test_output.csv')
 # Alice,25,Tokyo
 # Bob,30,Osaka
 
+#### CSV 型認識機能
+
+```bash
+# 基本的な型認識パース
+ruby -I lib -e "
+require 'rbcsv'
+csv_data = 'name,age,score\nAlice,25,85.5\nBob,30,92'
+result = RbCsv.parse_typed(csv_data)
+p result
+puts \"Age type: #{result[1][1].class}\"
+puts \"Score type: #{result[1][2].class}\"
+"
+# 期待される出力:
+# [["name", "age", "score"], ["Alice", 25, 85.5], ["Bob", 30, 92]]
+# Age type: Integer
+# Score type: Float
+
+# trim機能付き型認識パース
+ruby -I lib -e "
+require 'rbcsv'
+csv_data = '  name  ,  age  ,  score  \n  Alice  ,  25  ,  85.5  '
+result = RbCsv.parse_typed!(csv_data)
+p result
+puts \"Age type: #{result[1][1].class}\"
+"
+# 期待される出力:
+# [["name", "age", "score"], ["Alice", 25, 85.5]]
+# Age type: Integer
+
+# 型認識ファイル読み込み
+ruby -I lib -e "
+require 'rbcsv'
+result = RbCsv.read_typed('spec/fixtures/test.csv')
+p result[1]  # 2行目のデータ
+puts \"Age type: #{result[1][1].class}\"
+"
+# 期待される出力: ["Alice", 25, "Tokyo"] (ageが数値型)
+
+# 型認識の詳細テスト
+ruby -I lib -e "
+require 'rbcsv'
+test_data = 'type,value\ninteger,123\nfloat,45.6\nscientific,1.23e-4\nstring,hello\nempty,'
+result = RbCsv.parse_typed(test_data)
+result.each_with_index do |row, i|
+  next if i == 0  # ヘッダーをスキップ
+  value = row[1]
+  puts \"#{row[0]}: #{value.inspect} (#{value.class})\"
+end
+"
+# 期待される出力:
+# integer: 123 (Integer)
+# float: 45.6 (Float)
+# scientific: 0.000123 (Float)
+# string: "hello" (String)
+# empty: "" (String)
+
 # 書き込み→読み込みの往復テスト
 ruby -I lib -e "
 require 'rbcsv'
@@ -235,10 +291,10 @@ cd ../..
 
 ```bash
 # ベンチマーク実行
-ruby benchmark.rb
+ruby examples/benchmarks/benchmark.rb
 
 # カスタムテストファイルでのテスト
-ruby test.rb
+ruby examples/basic/basic_usage.rb
 ```
 
 ### コードスタイルチェック
@@ -260,16 +316,37 @@ cd ../..
 
 ```ruby
 # 関数ベースAPI（`!`サフィックスでtrim機能分離）
-RbCsv.parse(csv_string)          # 通常のパース
-RbCsv.parse!(csv_string)         # trim機能付きパース
-RbCsv.read(file_path)            # 通常のファイル読み込み
-RbCsv.read!(file_path)           # trim機能付きファイル読み込み
+
+# 文字列専用パース（従来型）
+RbCsv.parse(csv_string)          # 通常のパース（すべて文字列）
+RbCsv.parse!(csv_string)         # trim機能付きパース（すべて文字列）
+
+# 型認識パース（新機能 v0.1.8+）
+RbCsv.parse_typed(csv_string)    # 数値を数値型として返す
+RbCsv.parse_typed!(csv_string)   # trim + 数値を数値型として返す
+
+# ファイル読み込み
+RbCsv.read(file_path)            # 通常のファイル読み込み（すべて文字列）
+RbCsv.read!(file_path)           # trim機能付きファイル読み込み（すべて文字列）
+RbCsv.read_typed(file_path)      # 型認識ファイル読み込み
+RbCsv.read_typed!(file_path)     # trim + 型認識ファイル読み込み
+
+# ファイル書き込み
 RbCsv.write(file_path, data)     # CSVファイル書き込み
 
 # データ形式
-data = [
+# 従来型（すべて文字列）
+string_data = [
   ["header1", "header2", "header3"],  # ヘッダー行
-  ["value1", "value2", "value3"],     # データ行
+  ["value1", "value2", "value3"],     # データ行（すべて文字列）
+  # ...
+]
+
+# 型認識版（数値は数値型）
+typed_data = [
+  ["name", "age", "score"],           # ヘッダー行（文字列）
+  ["Alice", 25, 85.5],               # データ行（文字列, 整数, 浮動小数点）
+  ["Bob", 30, 92],                   # データ行（文字列, 整数, 整数）
   # ...
 ]
 ```
@@ -288,12 +365,36 @@ RbCsv.parse!(csv_string)  # trim版
 RbCsv.write(file_path, data)  # 新機能
 ```
 
+#### v0.1.8+（型認識機能追加）
+```ruby
+RbCsv.parse_typed(csv_string)    # 数値型自動変換
+RbCsv.parse_typed!(csv_string)   # trim + 数値型自動変換
+RbCsv.read_typed(file_path)      # ファイル読み込み + 数値型自動変換
+RbCsv.read_typed!(file_path)     # trim + ファイル読み込み + 数値型自動変換
+```
+
 ### 実装アーキテクチャ
 
 1. **parser.rs**: CSV解析・書き込みコア機能、エラーハンドリング
-2. **ruby_api.rs**: Ruby API関数、Magnus バインディング
-3. **lib.rs**: Magnus初期化と関数登録
-4. **error.rs**: 包括的なエラーハンドリングとRuby例外変換
+2. **value.rs**: CSV値の型定義（CsvValue enum）と型変換ロジック
+3. **ruby_api.rs**: Ruby API関数、Magnus バインディング
+4. **lib.rs**: Magnus初期化と関数登録
+5. **error.rs**: 包括的なエラーハンドリングとRuby例外変換
+
+#### モジュール詳細
+
+**parser.rs**
+- 文字列専用関数: `parse_csv_core`, `parse_csv_file`, `write_csv_file`
+- 型認識関数: `parse_csv_typed`, `parse_csv_file_typed`
+
+**value.rs**
+- `CsvValue` enum: Integer(i64), Float(f64), String(String)
+- 型変換メソッド: `from_str`, `from_str_trimmed`, `to_ruby`
+- 優先順位: 整数 → 浮動小数点 → 文字列
+
+**ruby_api.rs**
+- 文字列版: `parse`, `parse_trim`, `read`, `read_trim`, `write`
+- 型認識版: `parse_typed`, `parse_typed_trim`, `read_typed`, `read_typed_trim`
 
 ### 開発時の重要な注意点
 
@@ -455,9 +556,18 @@ cargo doc --open
 ### テスト戦略
 
 1. **単体テスト**: 各Rustモジュールに対するcargo test
+   - `value.rs`: 型変換ロジックの単体テスト
+   - `parser.rs`: CSV解析・型認識機能の単体テスト
 2. **統合テスト**: Ruby APIレベルでのRSpecテスト
+   - 基本的なCSV処理機能
+   - 型認識機能（parse_typed, read_typed系）
+   - エラーハンドリング
 3. **パフォーマンステスト**: 大きなCSVファイルでのベンチマーク
 4. **エッジケーステスト**: 不正なCSV、空ファイル、エンコーディング問題
+5. **型認識テスト**: 数値文字列の正確な型変換
+   - 整数、浮動小数点、科学記法
+   - 混在型のCSVデータ
+   - trim機能との組み合わせ
 
 ### デバッグ
 

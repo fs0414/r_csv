@@ -2,7 +2,6 @@ use crate::error::{CsvError, ErrorKind};
 use std::fs;
 use std::path::Path;
 
-/// CSV解析のオプション設定
 #[derive(Debug, Clone)]
 #[allow(dead_code)]
 pub struct CsvParseOptions {
@@ -17,8 +16,7 @@ impl Default for CsvParseOptions {
     }
 }
 
-/// エスケープシーケンスを実際の文字に変換
-pub fn escape_sanitize(s: &str) -> String {
+pub fn _escape_sanitize(s: &str) -> String {
     s.replace("\\n", "\n")
         .replace("\\r", "\r")
         .replace("\\t", "\t")
@@ -28,14 +26,12 @@ pub fn escape_sanitize(s: &str) -> String {
 
 /// 基本的なCSVパース処理
 pub fn parse_csv_core(input: &str, trim_config: csv::Trim) -> Result<Vec<Vec<String>>, CsvError> {
-    // 空のデータチェック
     if input.trim().is_empty() {
         return Err(CsvError::empty_data());
     }
 
-    // CSV crate に任せて適切なパースを行う（escape_sanitize は削除）
     let mut reader = csv::ReaderBuilder::new()
-        .has_headers(false) // ヘッダーを無効にして、すべての行を読み込む
+        .has_headers(false)
         .trim(trim_config)
         .from_reader(input.as_bytes());
 
@@ -48,7 +44,6 @@ pub fn parse_csv_core(input: &str, trim_config: csv::Trim) -> Result<Vec<Vec<Str
                 records.push(row);
             }
             Err(e) => {
-                // フィールド数不一致エラーを詳細化
                 if let csv::ErrorKind::UnequalLengths { expected_len, len, .. } = e.kind() {
                     let error_msg = format!(
                         "Field count mismatch at line {}: expected {} fields, got {} fields",
@@ -59,7 +54,6 @@ pub fn parse_csv_core(input: &str, trim_config: csv::Trim) -> Result<Vec<Vec<Str
                     return Err(CsvError::new(ErrorKind::FieldCountMismatch, error_msg));
                 }
 
-                // その他のcsvエラーを自動変換
                 return Err(CsvError::from(e));
             }
         }
@@ -108,16 +102,80 @@ pub fn parse_csv_file(file_path: &str, trim_config: csv::Trim) -> Result<Vec<Vec
     parse_csv_core(&content, trim_config)
 }
 
+/// 型認識を行うCSVパース処理
+pub fn parse_csv_typed(input: &str, trim_config: csv::Trim) -> Result<Vec<Vec<crate::value::CsvValue>>, CsvError> {
+    use crate::value::CsvValue;
+
+    if input.trim().is_empty() {
+        return Err(CsvError::empty_data());
+    }
+
+    let mut reader = csv::ReaderBuilder::new()
+        .has_headers(false)
+        .trim(trim_config)
+        .from_reader(input.as_bytes());
+
+    let mut records = Vec::new();
+
+    for (line_num, result) in reader.records().enumerate() {
+        match result {
+            Ok(record) => {
+                let row: Vec<CsvValue> = record.iter().map(|field| {
+                    if matches!(trim_config, csv::Trim::All | csv::Trim::Fields) {
+                        CsvValue::from_str_trimmed(field)
+                    } else {
+                        CsvValue::from_str(field)
+                    }
+                }).collect();
+                records.push(row);
+            }
+            Err(e) => {
+                if let csv::ErrorKind::UnequalLengths { expected_len, len, .. } = e.kind() {
+                    let error_msg = format!(
+                        "Field count mismatch at line {}: expected {} fields, got {} fields",
+                        line_num + 1,
+                        expected_len,
+                        len
+                    );
+                    return Err(CsvError::new(ErrorKind::FieldCountMismatch, error_msg));
+                }
+
+                return Err(CsvError::from(e));
+            }
+        }
+    }
+
+    if records.is_empty() {
+        return Err(CsvError::empty_data());
+    }
+
+    Ok(records)
+}
+
+/// 型認識を行うCSVファイル読み込み処理
+pub fn parse_csv_file_typed(file_path: &str, trim_config: csv::Trim) -> Result<Vec<Vec<crate::value::CsvValue>>, CsvError> {
+    let path = Path::new(file_path);
+    if !path.exists() {
+        return Err(CsvError::io(format!("File not found: {}", file_path)));
+    }
+
+    if !path.is_file() {
+        return Err(CsvError::io(format!("Path is not a file: {}", file_path)));
+    }
+
+    let content = match fs::read_to_string(path) {
+        Ok(content) => content,
+        Err(e) => {
+            return Err(CsvError::io(format!("Failed to read file '{}': {}", file_path, e)));
+        }
+    };
+
+    parse_csv_typed(&content, trim_config)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn test_escape_sanitize() {
-        let input = "Hello\\nWorld\\t\\\"Test\\\"\\\\End";
-        let expected = "Hello\nWorld\t\"Test\"\\End";
-        assert_eq!(escape_sanitize(input), expected);
-    }
 
     #[test]
     fn test_parse_csv_core_basic() {

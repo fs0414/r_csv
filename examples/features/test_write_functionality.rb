@@ -9,7 +9,7 @@
 # 前提条件:
 #   - bundle exec rake compile でライブラリがビルド済みであること
 
-require_relative 'lib/rbcsv'
+require_relative '../../lib/rbcsv'
 require 'fileutils'
 
 class RbCsvWriteTest

@@ -2,7 +2,7 @@
 # encoding: utf-8
 
 require 'csv'
-require_relative 'lib/r_csv'
+require_relative '../../lib/rbcsv'
 
 CSV_FILE = 'sample.csv'
 csv_content = File.read(CSV_FILE)
@@ -48,8 +48,8 @@ puts "Data:"
 csv_table.each_with_index { |row, i| puts "  [#{i}] #{row.to_h}" }
 puts
 
-puts "=== 4. RCsv.parse (current - raw arrays) ==="
-rcv_parse = RCsv.parse(small_csv)
+puts "=== 4. RbCsv.parse (current - raw arrays) ==="
+rcv_parse = RbCsv.parse(small_csv)
 puts "Type: #{rcv_parse.class}"
 puts "Rows: #{rcv_parse.length}"
 puts "Data:"
@@ -73,7 +73,7 @@ puts "   - Excludes header from data rows"
 puts "   - Example: #<CSV::Row id:\"1\" name:\"Alice\" age:\"30\">"
 puts
 
-puts "3. RCsv.parse (current):"
+puts "3. RbCsv.parse (current):"
 puts "   - Returns: Array<Array<String>>"
 puts "   - Excludes header row (data only)"
 puts "   - Raw string arrays"
@@ -86,29 +86,29 @@ puts
 puts "Header handling:"
 puts "  CSV.parse (default):     Includes header as row[0]"
 puts "  CSV.parse (headers=true): Excludes header, provides row['column'] access"
-puts "  RCsv.parse:              Excludes header, raw arrays only"
+puts "  RbCsv.parse:              Excludes header, raw arrays only"
 puts
 
 puts "Data structure:"
 puts "  CSV.parse:               Can return CSV::Row objects with named access"
-puts "  RCsv.parse:              Always returns raw Array<String>"
+puts "  RbCsv.parse:              Always returns raw Array<String>"
 puts
 
 puts "Row count difference:"
 csv_default = CSV.parse(small_csv)
 csv_headers = CSV.parse(small_csv, headers: true)
-rcv_data = RCsv.parse(small_csv)
+rcv_data = RbCsv.parse(small_csv)
 
 puts "  CSV.parse (default):     #{csv_default.length} rows (includes header)"
 puts "  CSV.parse (headers=true): #{csv_headers.length} rows (data only)"
-puts "  RCsv.parse:              #{rcv_data.length} rows (data only)"
+puts "  RbCsv.parse:              #{rcv_data.length} rows (data only)"
 puts
 
 puts "=== Compatibility Recommendations ==="
 puts
 
 puts "To match CSV.parse (default behavior):"
-puts "  - RCsv should include header row as first element"
+puts "  - RbCsv should include header row as first element"
 puts "  - Return format: [[\"id\", \"name\"], [\"1\", \"Alice\"], [\"2\", \"Bob\"]]"
 puts
 
@@ -117,7 +117,7 @@ puts "  - More complex: need CSV::Row-like objects"
 puts "  - Alternative: return {headers: [...], data: [[...], [...]]} structure"
 puts
 
-puts "Current RCsv matches:"
+puts "Current RbCsv matches:"
 puts "  - CSV.parse(content, headers: true) # data rows only"
 puts "  - But returns raw arrays instead of CSV::Row objects"
 puts
@@ -126,14 +126,14 @@ puts "=== Specific Implementation Suggestions ==="
 puts
 
 puts "Option 1: Match CSV.parse default (simplest):"
-puts "  RCsv.parse(content) → includes header row"
+puts "  RbCsv.parse(content) → includes header row"
 puts
 
 puts "Option 2: Add options parameter:"
-puts "  RCsv.parse(content, headers: false) → includes header"
-puts "  RCsv.parse(content, headers: true) → excludes header"
+puts "  RbCsv.parse(content, headers: false) → includes header"
+puts "  RbCsv.parse(content, headers: true) → excludes header"
 puts
 
 puts "Option 3: Multiple methods:"
-puts "  RCsv.parse_raw(content) → raw arrays with header"
-puts "  RCsv.parse(content) → structured data"
+puts "  RbCsv.parse_raw(content) → raw arrays with header"
+puts "  RbCsv.parse(content) → structured data"

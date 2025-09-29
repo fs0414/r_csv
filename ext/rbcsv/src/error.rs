@@ -86,7 +86,7 @@ impl CsvError {
     }
 }
 
-// csv crateのエラーからの変換
+// csv crate error to CsvError conversion
 impl From<csv::Error> for CsvError {
     fn from(err: csv::Error) -> Self {
         match err.kind() {
