@@ -17,3 +17,4 @@ puts "Parsed data:"
 parsed_data.each { |row| puts row.inspect }
 
 puts "csv parse done."
+
