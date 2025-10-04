@@ -60,6 +60,7 @@ result = RbCsv.parse_typed("name,age,score\nAlice,25,85.5")
 ## Benchmark
 
 Currently, we achieve 2.4 to 3.8 times faster processing for parse operations, with even greater speed improvements for type conversion.
+
 Compared to casting to arbitrary forms using Ruby methods, parse_typed with pre-defined type conversion delivers approximately 140 times faster results.
 
 *exec data 2025/10/04*
