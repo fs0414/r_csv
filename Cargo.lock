@@ -276,7 +276,7 @@ checksum = "08f8d2924cf136a1315e2b4c7460a39f62ef11ee5d522df9b2750fab55b868b6"
 
 [[package]]
 name = "rbcsv"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "csv",
  "env_logger",

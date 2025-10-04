@@ -67,16 +67,14 @@ class BenchmarkRunner
 
   def create_large_sample_data
     if File.exist?(LARGE_CSV_FILE)
-      puts "既存の大容量ファイルを使用: #{LARGE_CSV_FILE}"
+      puts "既存のファイルを使用: #{LARGE_CSV_FILE}"
     else
-      puts "大容量テストデータを作成中..."
+      puts "テストデータを作成中..."
       original_data = CSV.read(CSV_FILE)
 
       CSV.open(LARGE_CSV_FILE, "w") do |csv|
-        # ヘッダー
         csv << original_data.first
 
-        # 元データを50倍に拡張（約50,000レコード）
         50.times do |batch|
           original_data[1..-1].each_with_index do |row, index|
             new_row = row.dup
@@ -86,12 +84,12 @@ class BenchmarkRunner
         end
       end
 
-      puts "大容量ファイル作成完了: #{LARGE_CSV_FILE} (#{File.size(LARGE_CSV_FILE)} bytes)"
+      puts "ファイル作成完了: #{LARGE_CSV_FILE} (#{File.size(LARGE_CSV_FILE)} bytes)"
     end
 
     # 既存または新規に関わらず、コンテンツを読み込み
     @large_csv_content = File.read(LARGE_CSV_FILE)
-    puts "大容量データサイズ: #{@large_csv_content.bytesize} bytes"
+    puts "データサイズ: #{@large_csv_content.bytesize} bytes"
     puts
   end
 
@@ -191,12 +189,12 @@ class BenchmarkRunner
   def run_large_data_benchmark
     create_large_sample_data
 
-    puts "💪 大容量データ性能比較 (#{LARGE_ITERATIONS}回実行)"
+    puts "💪 データ性能比較 (#{LARGE_ITERATIONS}回実行)"
     puts "-" * 50
 
-    # 大容量データが正しく読み込まれているかチェック
+    # データが正しく読み込まれているかチェック
     if @large_csv_content.nil? || @large_csv_content.empty?
-      puts "エラー: 大容量データが読み込まれていません"
+      puts "エラー: データが読み込まれていません"
       return
     end
 

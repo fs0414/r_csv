@@ -1,5 +1,28 @@
 ## [Unreleased]
 
+## [0.2.0] - 2025-10-04
+
+### Added
+- **Type-aware CSV parsing**: New methods for automatic type conversion
+  - `parse_typed` and `parse_typed!` for string parsing with type detection
+  - `read_typed` and `read_typed!` for file reading with type detection
+  - Automatically converts numeric strings to Integer or Float types
+  - Preserves strings for non-numeric values
+- **Performance benchmarks**: Comprehensive benchmark suite
+  - 2.4-3.8x faster than Ruby's standard CSV library for parse operations
+  - ~140x faster for type conversion compared to manual Ruby conversion
+  - Added benchmark results to README
+
+### Changed
+- Improved README with cleaner, more concise documentation
+- Added author information and contribution guidelines
+- Updated API reference section for better clarity
+
+### Technical
+- Added `CsvValue` enum for type-safe value handling
+- Implemented efficient type detection algorithm (Integer → Float → String)
+- Added comprehensive tests for type conversion functionality
+
 ## [0.1.8] - 2025-01-28
 
 ### Added
