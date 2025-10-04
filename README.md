@@ -1,6 +1,6 @@
 # RbCsv
 
-Fast CSV library for Ruby powered by Rust.
+https://rubygems.org/gems/rbcsv
 
 ## Installation
 
