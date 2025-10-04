@@ -111,7 +111,7 @@ Automatic conversion (RbCsv typed)         0.000041   0.000001   0.000042 (  0.0
 
 ## Contributing
 
-Found a bug or have a suggestion? Please open an issue on [GitHub](https://github.com/fujitanisora/r_csv/issues).
+Found a bug or have a suggestion? Please open an issue on [GitHub](https://github.com/fs0414/r_csv).
 
 Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
 
@@ -119,7 +119,7 @@ Pull requests are welcome! For major changes, please open an issue first to disc
 
 **Fujitani Sora**
 📧 fujitanisora0414@gmail.com
-🐙 [@fujitanisora](https://github.com/fujitanisora)
+🐙 [@fujitanisora](https://github.com/fs0414)
 
 ## License
 
